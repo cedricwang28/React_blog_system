@@ -9,6 +9,7 @@ import Author from '../components/Author'
 import Advert from '../components/Advert'
 import Footer from '../components/Footer'
 import axios from 'axios'
+import  servicePath  from '../config/apiUrl'
 
 
 const Home = (list) =>{
@@ -69,9 +70,8 @@ const Home = (list) =>{
 
 Home.getInitialProps = async ()=>{
   const promise = new Promise((resolve)=>{
-    axios('http://127.0.0.1:7001/default/getArticleList').then(
+    axios(servicePath.getArticleList).then(
       (res)=>{
-        console.log('get remote data:',res.data.data)
         resolve(res.data)
       }
     )
