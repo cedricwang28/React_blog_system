@@ -1,6 +1,7 @@
 
 import {Avatar,Divider} from 'antd'
 import '../public/style/components/author.css'
+import { GithubOutlined } from '@ant-design/icons';
 
 const Author =()=>{
 
@@ -10,8 +11,8 @@ const Author =()=>{
             <div className="author-introduction">
                 Web developer, likes coding, science and technology. Keep calm, dedicated and make epic shit
                 <Divider>Social Link</Divider>
-                <Avatar size={28} icon="github" className="account"  />
-                
+                {/* <Avatar size={28}  className="account"  /> */}
+                <a href="https://github.com/cedricwang28"><GithubOutlined className="github" /></a>
             </div>
         </div>
     )

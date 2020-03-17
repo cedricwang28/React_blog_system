@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import Head from 'next/head'
-import {Row, Col ,Affix, Icon ,Breadcrumb  } from 'antd'
+import {Row, Col ,Affix,Breadcrumb} from 'antd'
+import { CalendarFilled, BookFilled, EyeFilled } from '@ant-design/icons';
 
 import Header from '../components/Header'
 import Author from '../components/Author'
@@ -58,9 +59,9 @@ const Detail = (props) => {
                   </div>
     
                   <div className="list-icon center">
-                    <span><Icon type="calendar" /> 2019-06-28</span>
-                    <span><Icon type="folder" /> Video</span>
-                    <span><Icon type="fire" /> 5498 persons</span>
+                    <span><CalendarFilled />2019-06-28</span>
+                    <span><BookFilled />Video</span>
+                    <span><EyeFilled />5498 persons</span>
                   </div>
     
                   <div className="detailed-content" dangerouslySetInnerHTML={{__html:html}}>
