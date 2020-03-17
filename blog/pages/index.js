@@ -3,6 +3,7 @@ import Head from 'next/head'
 import {Button} from 'antd'
 import Header from '../components/Header'
 import {Row, Col , List ,Icon} from 'antd'
+import Link from 'next/link'
 import '../public/style/pages/index.css'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
@@ -33,7 +34,12 @@ const Home = (list) =>{
                 renderItem={item => (
                   <List.Item>
 
-                    <div className="list-title">{item.title}</div>
+                    <div className="list-title">
+                      <Link href={{pathname:'/detail',query:{id:item.id}}}>
+                        <a>{item.title}</a>
+                      </Link>
+                    </div>
+
                     <div className="list-icon">
                       <span><Icon type="calendar" /> {item.postTime}</span>
                       <span><Icon type="folder" /> {item.typeName}</span>

@@ -10,6 +10,7 @@ import '../public/style/pages/detailed.css'
 import ReactMarkdown from 'react-markdown'
 import MarkNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
+import axios from 'axios'
 
 const Detail = () => {
     return (
@@ -73,7 +74,30 @@ const Detail = () => {
     
      </>
     )
+
+
 }
+
+
+
+Detail.getInitialProps = async(context)=>{
+
+  console.log(context.query.id)
+  let id =context.query.id
+  
+  const promise = new Promise((resolve)=>{
+
+    axios('http://127.0.0.1:7001/default/getArticleById/'+id).then(
+      (res)=>{
+      
+        resolve(res.data.data[0])
+      }
+    )
+  })
+
+  return await promise
+}
+
 
 
 let markdown='# P01:\n' +

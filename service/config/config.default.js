@@ -36,12 +36,23 @@ module.exports = appInfo => {
       // password
       password: 'wtw651125',
       // database
-      database: 'u564175643_react_blog',    
+      database: 'u564175643_react_blog',
     },
     // load into app, default is open
     app: true,
     // load into agent, default is close
     agent: false,
+  };
+
+  config.security = {
+    csrf: {
+      enable: false
+    },
+    domainWhiteList: ['*']
+  };
+  config.cors = {
+    origin: '*',
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS'
   };
 
   return {

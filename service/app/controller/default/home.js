@@ -18,7 +18,7 @@ class HomeController extends Controller{
         let sql = 'SELECT article.id as id,'+
                   'article.title as title,'+
                   'article.introduction as introduction,'+
-                  'article.postTime as postTime,'+
+                  "FROM_UNIXTIME(article.postTime,'%Y-%m-%d %H:%i:%s' ) as postTime,"+
                   'article.view_count as view_count ,'+
                   '.type.typeName as typeName '+
                   'FROM article LEFT JOIN type ON article.type_id = type.Id'
@@ -29,6 +29,31 @@ class HomeController extends Controller{
              data:results
          }
      }
+
+
+     async getArticleById(){
+        
+        let id = this.ctx.params.id
+
+        let sql = 'SELECT article.id as id,'+
+        'article.title as title,'+
+        'article.introduction as introduction,'+
+        'article.article_content as article_content,'+
+        "FROM_UNIXTIME(article.postTime,'%Y-%m-%d %H:%i:%s' ) as postTime,"+
+        'article.view_count as view_count ,'+
+        'type.typeName as typeName ,'+
+        'type.id as typeId '+
+        'FROM article LEFT JOIN type ON article.type_id = type.Id '+
+        'WHERE article.id='+id
+
+
+
+        const result = await this.app.mysql.query(sql)
+
+
+        this.ctx.body={data:result}
+
+    }
 
 }
 
