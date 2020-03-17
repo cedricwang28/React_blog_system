@@ -7,12 +7,34 @@ import Author from '../components/Author'
 import Advert from '../components/Advert'
 import Footer from '../components/Footer'
 import '../public/style/pages/detailed.css'
-import ReactMarkdown from 'react-markdown'
 import MarkNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
 import axios from 'axios'
+import marked from 'marked'
+import hljs from "highlight.js";
+import 'highlight.js/styles/monokai-sublime.css';
 
-const Detail = () => {
+
+const Detail = (props) => {
+
+  const renderer = new marked.Renderer();
+
+  marked.setOptions({
+    renderer: renderer, 
+    gfm: true,
+    pedantic: false,
+    sanitize: false,
+    tables: true,
+    breaks: false,
+    smartLists: true,
+    smartypants: false,
+    highlight: function (code) {
+            return hljs.highlightAuto(code).value;
+    }
+  }); 
+
+    let html = marked(props.article_content) 
+
     return (
         <>
         <Head>
@@ -41,11 +63,8 @@ const Detail = () => {
                     <span><Icon type="fire" /> 5498 persons</span>
                   </div>
     
-                  <div className="detailed-content" >
-                        <ReactMarkdown 
-                            source={markdown} 
-                            escapeHtml={false}  
-                        />
+                  <div className="detailed-content" dangerouslySetInnerHTML={{__html:html}}>
+                        
                   </div>
     
                </div>
@@ -62,7 +81,7 @@ const Detail = () => {
                     <div className="nav-title">Catalogue</div>
                     <MarkNav
                     className="article-menu"
-                    source={markdown}
+                    source={html}
 
                     ordered={false}
                     />
@@ -100,40 +119,6 @@ Detail.getInitialProps = async(context)=>{
 
 
 
-let markdown='# P01:\n' +
-  '[ **M** ] arkdown + E [ **ditor** ] = **Mditor**  \n' +
-  '> Mditor ... \n\n' +
-   '**hhh**\n\n' +
-  '*iii*`\n\n' +
-  '***bbbb***\n\n' +
-  '~~ddd~~ \n\n'+
-  '\`console.log(111)\` \n\n'+
-  '# p02: Hello World \n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n'+
-  '***\n\n\n' +
-  '# p03:Vue3.0\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '# p04:Vue3.0\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '#5 p05:Vue3.0\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '# p06:Vue3.0\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '# p07:Vue3.0\n' +
-  '> aaaaaaaaa\n' +
-  '>> bbbbbbbbb\n' +
-  '>>> cccccccccc\n\n'+
-  '``` var a=11; ```'
 
 
 export default Detail
