@@ -1,4 +1,5 @@
 import React,{useState} from 'react'
+import '../public/style/pages/main.css'
 import Head from 'next/head'
 import {Button} from 'antd'
 import Header from '../components/Header'

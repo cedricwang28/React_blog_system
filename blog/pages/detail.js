@@ -101,7 +101,7 @@ const Detail = (props) => {
 
 
 
-Detailed.getInitialProps = async(context)=>{
+Detail.getInitialProps = async(context)=>{
 
   console.log(context.query.id)
   let id =context.query.id

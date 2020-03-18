@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Head from 'next/head'
 import {Row, Col , List ,Icon ,Breadcrumb  } from 'antd'
 import Header from '../components/Header'
@@ -7,16 +7,18 @@ import Advert from '../components/Advert'
 import Footer from '../components/Footer'
 // import '../public/style/pages/list.css'
 
+import axios from 'axios'
+import  servicePath  from '../config/apiUrl'
+import Link from 'next/link'
 
 
-const MyList = () =>{
 
-  const [ mylist , setMylist ] = useState(
-    [
-      
-    ]
-  );
+const MyList = (list) =>{
 
+  const [ mylist , setMylist ] = useState(list.data);
+  useEffect(()=>{
+    setMylist(list.data)
+   })
 
   return (
     <>
@@ -35,20 +37,24 @@ const MyList = () =>{
               </div>
 
               <List
-                itemLayout="vertical"
-                dataSource={mylist}
-                renderItem={item => (
-                  <List.Item>
-                    <div className="list-title">{item.title}</div>
-                    <div className="list-icon">
-                      <span><Icon type="calendar" /> 2019-06-28</span>
-                      <span><Icon type="folder" /> Video List</span>
-                      <span><Icon type="fire" /> 5498 persons</span>
-                    </div>
-                    <div className="list-context">{item.context}</div>  
-                  </List.Item>
-                )}
-              />  
+                  itemLayout="vertical"
+                  dataSource={mylist}
+                  renderItem={item => (
+                    <List.Item>
+                      <div className="list-title">
+                          <Link href={{pathname:'/detail',query:{id:item.id}}}>
+                          <a>{item.title}</a>
+                        </Link>
+                      </div>
+                      <div className="list-icon">
+                        <span><Icon type="calendar" />{item.postTime}</span>
+                        <span><Icon type="folder" /> {item.typeName}</span>
+                        <span><Icon type="fire" />  {item.view_count}人</span>
+                      </div>
+                      <div className="list-context">{item.introduction}</div>  
+                    </List.Item>
+                  )}
+                />   
 
             </div>
         </Col>
@@ -64,5 +70,18 @@ const MyList = () =>{
   )
 
 } 
+
+
+MyList.getInitialProps = async (context)=>{
+
+  let id =context.query.id
+  const promise = new Promise((resolve)=>{
+    axios(servicePath.getListById+id).then(
+      (res)=>resolve(res.data)
+    )
+  })
+  return await promise
+}
+
 
 export default MyList

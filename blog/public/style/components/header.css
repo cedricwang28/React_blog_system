@@ -4,7 +4,7 @@
     overflow: hidden;
     height: 3.2rem;
     border-bottom:1px solid #eee;
-   
+    margin-bottom: 3vh;
 }
 .header-center{
     max-width: 1100px;
@@ -28,4 +28,12 @@
 .memu-div a{
     color:#999 !important; 
     font-size: .9rem;
+}
+
+
+.headerMenu{
+   
+    font-size: 16px;
+    transform: translate(0,-15px);
+    text-transform: uppercase;
 }
