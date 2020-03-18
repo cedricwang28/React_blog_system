@@ -93,3 +93,7 @@
 .date-select{
     margin-top:10px;
 }
+
+.publish{
+    transform: translate(7vw,0);
+}
