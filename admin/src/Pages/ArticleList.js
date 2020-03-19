@@ -31,6 +31,31 @@ function ArticleList(props){
     } 
 
 
+    const delArticle = (id)=>{
+        confirm({
+            title: 'Do you really want to delete?',
+            content: 'click ok to delete forever',
+            onOk() {
+                axios(servicePath.delArticle+id,{ withCredentials: true}).then(
+                    res=>{ 
+                        message.success('succeeded')
+                        getList()
+                        }
+                    )
+            },
+            onCancel() {
+                message.success('nothing changed')
+            },
+         });
+    
+    }
+
+    const updateArticle = (id,checked)=>{
+
+        props.history.push('/index/add/'+id)
+    
+    }
+
     return (
         <div>
              <List
@@ -80,9 +105,9 @@ function ArticleList(props){
                             </Col>
 
                             <Col span={4}>
-                              <Button type="primary" >Change</Button>&nbsp;
+                              <Button type="primary" onClick={()=>{updateArticle(item.id)}}>Change</Button>&nbsp;
 
-                              <Button >Delete </Button>
+                              <Button onClick={()=>{delArticle(item.id)}}>Delete </Button>
                             </Col>
                         </Row>
 

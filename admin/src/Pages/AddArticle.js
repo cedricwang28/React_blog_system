@@ -27,8 +27,15 @@ function AddArticle(props){
     const [selectedType,setSelectType] = useState('Type') 
 
     useEffect(()=>{
-        getTypeInfo() 
-       },[])
+        getTypeInfo()
+        
+        let tmpId = props.match.params.id
+        if(tmpId){
+            setArticleId(tmpId)
+            getArticleById(tmpId)
+        } 
+    },[])
+
 
     marked.setOptions({
         renderer:new marked.Renderer(),
@@ -151,6 +158,28 @@ function AddArticle(props){
         }
     }
 
+
+    const getArticleById = (id)=>{
+        axios(servicePath.getArticleById+id,{ 
+            withCredentials: true,
+            header:{ 'Access-Control-Allow-Origin':'*' }
+        }).then(
+            res=>{
+                //let articleInfo= res.data.data[0]
+                setArticleTitle(res.data.data[0].title)
+                setArticleContent(res.data.data[0].article_content)
+                let html=marked(res.data.data[0].article_content)
+                setMarkdownContent(html)
+                setIntroducemd(res.data.data[0].introduction)
+                let tmpInt = marked(res.data.data[0].introduction)
+                setIntroducehtml(tmpInt)
+                setShowDate(res.data.data[0].postTime)
+                setSelectType(res.data.data[0].typeId)
+    
+            }
+        )
+    }
+    
 
     
     return (
