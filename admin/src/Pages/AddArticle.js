@@ -72,7 +72,86 @@ function AddArticle(props){
 
             }
             )
+    }
+
+    const selectTypeHandler =(value)=>{
+        setSelectType(value)
+    }
+
+
+    const saveArticle = ()=>{
+        if(!selectedType){
+            message.error('choose type')
+            return false
+        }else if(!articleTitle){
+            message.error('empty title')
+            return false
+        }else if(!articleContent){
+            message.error('empty content')
+            return false
+        }else if(!introducemd){
+            message.error('empty intro')
+            return false
+        }else if(!showDate){
+            message.error('empty date')
+            return false
         }
+        message.success('succeed')
+
+        let dataProps={}   
+        dataProps.type_id = selectedType 
+        dataProps.title = articleTitle
+        dataProps.article_content =articleContent
+        dataProps.introduction =introducemd
+        let datetext= showDate.replace('-','/') 
+        dataProps.postTime =(new Date(datetext).getTime())/1000
+
+
+        if(articleId==0){
+            console.log('articleId=:'+articleId)
+            dataProps.view_count =Math.ceil(Math.random()*100)+1000
+            axios({
+                method:'post',
+                url:servicePath.addArticle,
+                data:dataProps,
+                withCredentials: true
+            }).then(
+                res=>{
+                    console.log(res.data,"iiiiiiiiiinsert");
+                    
+                    setArticleId(res.data.insertId)
+                    if(res.data.isScuccess){
+                        message.success('added')
+                    }else{
+                        message.error('fail');
+                    }
+
+                }
+            )
+        }else{
+            dataProps.id = articleId 
+            axios({
+                method:'post',
+                url:servicePath.updateArticle,
+                header:{ 'Access-Control-Allow-Origin':'*' },
+                data:dataProps,
+                withCredentials: true
+            }).then(
+                res=>{
+
+                if(res.data.isScuccess){
+                    message.success('saved')
+                }else{
+                    message.error('fail');
+                }
+
+
+                }
+            )
+        }
+    }
+
+
     
     return (
         <div>
@@ -80,14 +159,19 @@ function AddArticle(props){
                 <Col span={18}>
                         <Row gutter={10} >
                             <Col span={20}>
-                                <Input 
-                                    placeholder="Title" 
-                                    size="large" />
+                            <Input 
+                                value={articleTitle}
+                                placeholder="Title" 
+                                onChange={e=>{
+
+                                setArticleTitle(e.target.value)
+                                }}
+                                size="large" />
                             </Col>
                             
                             <Col span={4}>
                                 &nbsp;
-                                <Select defaultValue={selectedType} size="large" >
+                                <Select defaultValue={selectedType} size="large" onChange={selectTypeHandler}>
                                     {
                                         typeInfo.map((item,index)=>{
                                             return (<Option key={index} value={item.Id}>{item.typeName}</Option>)
@@ -127,7 +211,7 @@ function AddArticle(props){
                     <Row>
                         <Col span={24}>
                                 <Button  size="large" className="publish">store</Button>&nbsp;
-                                <Button type="primary" size="large" className="publish">Publish</Button>
+                                <Button type="primary" size="large" className="publish" onClick={saveArticle}>Publish</Button>
                                 <br/>
                         </Col>
                         <Col span={24}>
@@ -152,10 +236,12 @@ function AddArticle(props){
                 <Col span={12}>
                     <div className="date-select">
                         <DatePicker
-                            placeholder="Publish Date"
-                            size="large"  
+                            onChange={(date,dateString)=>setShowDate(dateString)} 
+                            placeholder="Publish date"
+                            size="large"
+
                         />
-                    </div>
+                        </div>
                 </Col>
             </Row>
             </div>
