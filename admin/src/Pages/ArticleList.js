@@ -1,0 +1,98 @@
+import React,{useState,useEffect} from 'react';
+// import '../static/css/ArticleList.css'
+import { List ,Row ,Col , Modal ,message ,Button,Switch} from 'antd';
+import axios from 'axios'
+import  servicePath  from '../config/apiUrl'
+import '../static/css/ArticleList.css'
+const { confirm } = Modal;
+
+
+
+function ArticleList(props){
+
+    const [list,setList]=useState([])
+
+    useEffect(()=>{
+        getList()
+    },[])
+
+    const getList = ()=>{
+        axios({
+                method:'get',
+                url: servicePath.getArticleList,
+                withCredentials: true,
+                header:{ 'Access-Control-Allow-Origin':'*' }
+            }).then(
+            res=>{
+                setList(res.data.list)  
+    
+                }
+            )
+    } 
+
+
+    return (
+        <div>
+             <List
+                header={
+                    <Row className="list-div">
+                        <Col span={8}>
+                            <b>Title</b>
+                        </Col>
+                        <Col span={3}>
+                            <b>Type</b>
+                        </Col>
+                        <Col span={3}>
+                            <b>Publish Time</b>
+                        </Col>
+                        <Col span={3}>
+                            <b>Episodes</b>
+                        </Col>
+                        <Col span={3}>
+                            <b>Views</b>
+                        </Col>
+
+                        <Col span={4}>
+                            <b>Operation</b>
+                        </Col>
+                    </Row>
+
+                }
+                bordered
+                dataSource={list}
+                renderItem={item => (
+                    <List.Item>
+                        <Row className="list-div">
+                            <Col span={8}>
+                                {item.title}
+                            </Col>
+                            <Col span={3}>
+                             {item.typeName}
+                            </Col>
+                            <Col span={3}>
+                                {item.addTime}
+                            </Col>
+                            <Col span={3}>
+                                <span>{item.part_count}</span> Episodes
+                            </Col>
+                            <Col span={3}>
+                              {item.view_count}
+                            </Col>
+
+                            <Col span={4}>
+                              <Button type="primary" >Change</Button>&nbsp;
+
+                              <Button >Delete </Button>
+                            </Col>
+                        </Row>
+
+                    </List.Item>
+                )}
+                />
+
+        </div>
+    )
+
+}
+
+export default ArticleList
